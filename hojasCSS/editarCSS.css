@@ -1,0 +1,176 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    line-height: 1.4;
+}
+
+header {
+    position: relative;
+    display: flex;
+    width: auto;
+    height: 190px;
+    border: 1px;
+    background-color: #1e3c6b;
+}
+
+#logoTecnm{
+    position: absolute;
+    padding-top: 40px;
+    height: 100px;
+    width: 290px;
+}
+
+#letrasITC {
+    margin: 0 auto;
+    padding-top: 60px;
+    padding-left: 60px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 40px;
+    color: white;
+}
+
+#imagenITC {
+    height: 100px;
+    position: absolute;
+    right: 0px;
+    margin:0px auto;
+    padding-top: 40px;
+    padding-right: 30px;
+}
+
+body {
+    color: #404040;
+    font-family: "Arial", Segoe UI, Tahoma, sans-serifl, Helvetica Neue, Helvetica;
+}
+
+#perfil{
+    width: 400px;
+    height: 750px;
+    background: #24303c;
+    padding: 30px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-family: 'calibri';
+    color: white;
+    box-shadow: 7px 13px 37px #000;
+}
+
+.formulario_seccion{
+    width: 100%;
+    background: #24303c;
+    padding: 5px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    border: 1px solid #1f53c5;
+    font-family: 'calibri';
+    font-size: 18px;
+    color: white;
+}
+
+#imagenMain{
+    height: 100px;
+    margin-top: 120px;
+    position: absolute;
+    right: 30px;
+}
+
+#imagenMain p{
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size:larger;
+    text-align: center;
+}
+
+.img{
+    margin-top: 30px;
+    position: absolute;
+    left: 30px;
+}
+
+.lbl-menu label{
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 400ms ease;
+}
+
+.lbl-menu label:hover{
+    background: #28435d;
+}
+
+.content{
+    position: relative;
+}
+
+.content div{
+    position: absolute;
+    transition: all 600ms ease;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.90);
+    padding: 30px;
+    padding-bottom: 40px;
+}
+
+.content div::after{
+    position: absolute;
+    content: '';
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid #fff;
+    bottom: 100%;
+    left: 28px;
+}
+
+.content .tab2::after{
+    left: 100px;
+}
+
+#radio1, #radio2{
+    display: none;
+}
+
+#radio1:checked ~ .tab1,
+#radio2:checked ~ .tab2
+{
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+
+}
+
+.seleccion{
+    background: #24303c;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    margin-left: 5px;
+    border: 1px solid white;
+    font-family: 'calibri';
+    font-size: larger;
+    color: white;
+  }
+
+  button{
+    width: 100%;
+    background: #1f53c5;
+    border-radius: 4px;
+    border-color: aliceblue;
+    padding: 12px;
+    color: white;
+    margin: 16px 0;
+    font-size: 16px;
+    transition: background-color 0.5s;
+  }
+
+  button:hover{
+    background-color: #183166;
+  }
+
