@@ -16,11 +16,11 @@ require_once "filePhp/metodosCRUD.php";
     if (isset($_POST['enviar'])) {
 
     } else {
-        
+        //Consulta paa llenar los campos del formulario.
         $c = new conexionBD();
         $conectar = $c-> conexion();
 
-        $id = $_GET['id_trabajador'];
+        $id = $_GET['id_trabajador']; //Id se obtiene desde la URL
         $sql = "SELECT * FROM trabajadores WHERE id_trabajador ='$id'";
         $resultado = mysqli_query($conectar, $sql);
 
@@ -51,17 +51,17 @@ require_once "filePhp/metodosCRUD.php";
             <a href="menuAdmin.html"><img src="img/paginaPrincipal.png"><p>Pagina principal</p></a>
         </div>
 
-        <form id="foto" method="post" action="filePhp/actualizarFoto.php" enctype="multipart/form-data">
+        <form id="foto" method="post" action="filePhp/actualizarFoto.php" enctype="multipart/form-data"> <!--Actualizar foto del profesor-->
         <div class="img"> 
-                <img style="border: 5px solid; border-color: #000;" src="data:image/jpg;base64,<?php echo base64_encode($imagen); ?>" alt="Foto">
-                <br>				
-                <input class='filestyle' data-buttonText="Logo" type="file" name="imagefile" id="imagefile" style="display: none;">
-                <button id="executeButton">Tomar foto</button>
-            </div>
+            <img style="border: 5px solid; border-color: #000;" src="data:image/jpg;base64,<?php echo base64_encode($imagen); ?>" alt="Foto">
+            <br>				
+            <input class='filestyle' data-buttonText="Logo" type="file" name="imagefile" id="imagefile" style="display: none;">
+            <button id="executeButton">Tomar foto</button>
+        </div>
 
         </form>
 
-        <form method="post" id="perfil" action="filePhp/actualizar.php" enctype="multipart/form-data">
+        <form method="post" id="perfil" action="filePhp/actualizar.php" enctype="multipart/form-data"> <!--Actualizar informacion del profesor-->
 
             <div class="container">
                 <h2 class="panel-title" style="text-align: center;"><i class='glyphicon glyphicon-user'></i>PERFIL</h2>
@@ -166,7 +166,6 @@ require_once "filePhp/metodosCRUD.php";
 
     <script>
         document.getElementById("botonActualizar").onclick = function() {
-        // Llama a la función o código que desees desde "miarchivo.js"
         miFuncion(); // Reemplaza "miFuncion" con el nombre de tu función
     };
     </script>

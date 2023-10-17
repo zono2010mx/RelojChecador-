@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 require_once "conexionBD.php"; 
 require_once "metodosCRUD.php";
 
@@ -24,11 +25,9 @@ $datos = array(
 );
 
 if ($contrato == null) {
-    echo '<script type="text/javascript">
-    alert("No selecciono el tipo de contrato");
-    location.href="../altas.php"
-    </script>';
-    
+    $_SESSION['mensaje'] = "No selecciono el tipo de contrato";
+    header("Location:../altas.php");
+    exit();
     
 } else {
     $obj = new metodos();

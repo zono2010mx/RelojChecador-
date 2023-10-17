@@ -6,6 +6,7 @@
     <title>Altas</title>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> <!--Cuadro de alerta perzonalizado-->
     <link rel="stylesheet" href="hojasCSS/altasCSS.css" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
     <!---------------------------------Encabezado---------------------------------------------->
@@ -65,6 +66,25 @@
                 return false;
             }
         }
+    </script>
+
+    <script>
+        // Verifica si se ha establecido un mensaje de éxito en la sesión (después de procesar en PHP)
+        <?php
+        session_start();
+        if (isset($_SESSION['mensaje'])) {
+        ?>
+        // Muestra un SweetAlert con el mensaje de la sesión
+        Swal.fire({
+            title: 'Mensaje',
+            text: '<?php echo $_SESSION['mensaje']; ?>',
+            icon: 'error'
+        });
+        <?php
+        // Limpia la sesión
+        unset($_SESSION['mensaje']);
+        }
+        ?>
     </script>
 
 </body>
