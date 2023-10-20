@@ -1,18 +1,13 @@
 import cv2
-import database as db
 import os
 from mtcnn.mtcnn import MTCNN
 from matplotlib import pyplot as plt
 import sys
+import mysql.connector as db
+from mysql.connector import Error
 
-argumento = sys.argv[1] if len(sys.argv) > 1 else None
+argumento = sys.argv[1] 
 
-if argumento is not None:
-    print("Dato recibido desde PHP:", argumento)
-else:
-    print("No se recibieron datos desde PHP")
-    
-"""
 path = 'C:/xampp/htdocs/relojChecador/'
 
 def face(img, faces):
@@ -26,21 +21,43 @@ def face(img, faces):
         cv2.imwrite(img, face)
         plt.imshow(data[y1:y2, x1:x2])
 
+def convertToBinaryData(filename):
+    # Convert digital data to binary format
+    try:
+        with open(filename, 'rb') as file:
+            binaryData = file.read()
+        return binaryData
+    except:
+        return 0  
+
 def register_face_db(img):
-    name_user = img.replace(".jpg","").replace(".png","")
-    res_bd = db.registerUser(name_user, path + img)
-
-    if(res_bd["affected"]):
-        print("Image guardada en la BD")
-    else:
-        print("fallo al agregfar")
-    os.remove(img)
-
-id_user = input("Por favor, dame el nombre: ")
+    img.replace(".jpg","").replace(".png","")
+    photo = img
+    name = argumento  
+    
+    connection = db.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='basedatos'
+            )
+    cursor = connection.cursor()
+    sql = "UPDATE `trabajadores` SET foto = %s WHERE nombre = %s"
+    pic = convertToBinaryData(photo)
+    
+    cursor.execute(sql, (pic, name))
+    connection.commit() 
+ 
+    if connection.is_connected():
+        cursor.close()
+        connection.close() 
+    
+    print("Resultado exitoso")
+    os.remove(img)  
 
 # Inicializar la cámara web
 cap = cv2.VideoCapture(0)  # 0 representa la cámara predeterminada (puede variar según tu configuración)
-img = f"{id_user}.jpg"
+img = f"{argumento}.jpg"
 
 while True:
     # Capturar un fotograma de la cámara
@@ -49,10 +66,15 @@ while True:
     # Mostrar el fotograma en una ventana
     cv2.imshow('Cámara Web', frame)
 
-    # Salir del bucle si se presiona la tecla 'q'
-    if cv2.waitKey(1) == 27:
+    # Salir del bucle si se presiona la tecla 'space'
+    if cv2.waitKey(1) == 32:
         cv2.imwrite(img, frame)
         break
+
+    elif cv2.waitKey(1) == 49: # Salir del bucle si se presiona la tecla '1'
+        cap.release()
+        cv2.destroyAllWindows()
+        sys.exit(0)
 
 # Liberar la cámara y cerrar la ventana
 cap.release()
@@ -60,7 +82,6 @@ cv2.destroyAllWindows()
 
 pixels = plt.imread(img)
 faces = MTCNN().detect_faces(pixels)
-    
+ 
 face(img, faces) 
 register_face_db(img)
-"""

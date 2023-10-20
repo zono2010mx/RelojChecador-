@@ -1,22 +1,24 @@
 <?php
 
-if(!empty($_FILES['imagefile']['tmp_name']) 
-    && file_exists($_FILES['imagefile']['tmp_name'])) {
-        $foto = addslashes(file_get_contents($_FILES['imagefile']['tmp_name']));
+$pythonScript = "../reconocimientoFacial/resgistro.py";
+$id = $_POST['inpNumero'];
+$argumento = $_POST['inpNombre']; // Dato a enviar al script de Python
 
-        $pythonScript = "../reconocimientoFacial/resgistro.py";
+$cmd = "python $pythonScript $argumento";
 
-        $argumento = $_POST['txtNombre']; // Dato que deseas enviar al script de Python
-        $cmd = "python $pythonScript $argumento";
+// Ejecuta el script de Python utilizando la función shell_exec()
+$output = shell_exec($cmd);
 
-        // Ejecuta el script de Python utilizando la función shell_exec()
-        $output = shell_exec($cmd);
+if ($output !== null) {
+    echo "Resultado de Python: " . $output; //Echo para retornar la funciónde de python
+    echo "<script> 
+    location.href='../editar.php?id_trabajador=".$id."';
+    </script>";
 
-        if ($output !== null) {
-                  
-        } else {
-            echo "Error al ejecutar el script de Python";
-        }
+} else {
+    echo "<script> 
+    location.href='../editar.php?id_trabajador=".$id."';
+    </script>";
 }
-
+  
 ?>

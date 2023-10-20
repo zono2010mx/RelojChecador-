@@ -10,6 +10,7 @@ require_once "filePhp/metodosCRUD.php";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Profesor</title>
     <link rel="stylesheet" href="hojasCSS/editarCSS.css" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
     <?php
@@ -51,11 +52,13 @@ require_once "filePhp/metodosCRUD.php";
             <a href="menuAdmin.html"><img src="img/paginaPrincipal.png"><p>Pagina principal</p></a>
         </div>
 
-        <form id="foto" method="post" action="filePhp/actualizarFoto.php" enctype="multipart/form-data"> <!--Actualizar foto del profesor-->
+        <form id="foto" method="POST" action="filePhp/actualizarFoto.php" enctype="multipart/form-data"> <!--Actualizar foto del profesor-->
         <div class="img"> 
-            <img style="border: 5px solid; border-color: #000;" src="data:image/jpg;base64,<?php echo base64_encode($imagen); ?>" alt="Foto">
+            <img id="imgPerfil" src="data:image/jpg;base64,<?php echo base64_encode($imagen); ?>" alt="Foto">
             <br>				
             <input class='filestyle' data-buttonText="Logo" type="file" name="imagefile" id="imagefile" style="display: none;">
+            <input readonly hidden type="text" name="inpNumero" value="<?php echo $id; ?>">
+            <input readonly hidden type="text" id="inpNombre" name="inpNombre" value="<?php echo $nombre; ?>">
             <button id="executeButton">Tomar foto</button>
         </div>
 

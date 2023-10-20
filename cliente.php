@@ -3,41 +3,61 @@
 require_once "filePhp/conexionBD.php"; 
 require_once "filePhp/metodosCRUD.php";
 
-$database = new metodos();                     // Crea un objeto de la clase metodos en metodosCRUD.php;
+$database = new metodos();                                                       // Crea un objeto de la clase metodos en metodosCRUD.php;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {       // Verifica si se ha enviado el formulario por POST
-    
-    $user_id = $_POST['user_id'];                // Obtener el ID del usuario desde el formulario
-    $fecha = date("Y-m-d");                      //Obtiene la fecha
-    $fechaAnterior = date("Y-m-d", strtotime($fecha . " -1 day")); // Resta un día a la fecha actual
-    date_default_timezone_set('America/Cancun'); $hora_actual = date("H:i:s"); //Obtiene la hora
+if ($_SERVER["REQUEST_METHOD"] == "POST") {                                      // Verifica si se ha enviado el formulario por POST
 
-    $user_data = array();                                      //Array para mostrar el nombre
-    $date_array = array($user_id, $fechaAnterior, $hora_actual);       //Array para guardar la checada
+    $pythonScript = "reconocimientoFacial/validacion.py";                         //Scrip de python
+    $user_id = $_POST['user_id'];                                                // Obtener el ID del usuario desde el formulario
+    $fecha = date("Y-m-d");                                                      //Obtiene la fecha
+    $fechaAnterior = date("Y-m-d", strtotime($fecha . " -1 day"));               // Resta un día a la fecha actual
+    date_default_timezone_set('America/Cancun'); $hora_actual = date("H:i:s");   //Obtiene la hora
 
-    $user_data = $database->mostrarDato($user_id); // Obtener los datos del usuario por la funcion del objeto metodos en metodosCRUD.php;
+    $cmd = "python $pythonScript $user_id"; #envia el dato al script de python
+    $output = shell_exec($cmd);
+    $resultado = file_get_contents("output.txt");
 
-    // Verificar si el arreglo $user_data contiene datos antes de acceder a un índice, y el resultado lo imprime en el input de "nombre"
-    if ($user_data !== null && isset($user_data['nombre']) && isset($user_data['ap_paterno']) && isset($user_data['ap_materno'])){
-        // Concatenar nombre y apellido para imprimirlo
-        $user_fullname = $user_data['nombre'] . ' ' . $user_data['ap_paterno'].' '. $user_data['ap_materno'];
-        $user_photo = $user_data['foto'];
+    if ($resultado == "Bienvenido usuario") {
 
-        //Guardar la hora y la fecha del chequeo en la base de datos
-        $ChecadaSave = new metodos();
-        $ChecadaSave->insertarChecada($date_array);
-        
-        //Imprime la fecha y la hora de la checada
-        $checada_fecha = array();
-        $checada_fecha = $database->mostrarChecada($user_id);
+        $user_data = array();                                                      //Array para mostrar el nombre
+        $date_array = array($user_id, $fechaAnterior, $hora_actual);               //Array para guardar la checada
 
-        $fecha_Hora = $checada_fecha['fecha'] . ' ' . $checada_fecha['hora'];
+        $user_data = $database->mostrarDato($user_id); // Obtener los datos del usuario por la funcion del objeto metodos en metodosCRUD.php;
 
-    }else {
+        // Verificar si el arreglo $user_data contiene datos antes de acceder a un índice, y el resultado lo imprime en el input de "nombre"
+        if ($user_data !== null && isset($user_data['nombre']) && isset($user_data['ap_paterno']) && isset($user_data['ap_materno'])){
+            // Concatenar nombre y apellido para imprimirlo
+            $user_fullname = $user_data['nombre'] . ' ' . $user_data['ap_paterno'].' '. $user_data['ap_materno'];
+            $user_photo = $user_data['foto'];
+
+            //Guardar la hora y la fecha del chequeo en la base de datos
+            $ChecadaSave = new metodos();
+            $ChecadaSave->insertarChecada($date_array);
+            
+            //Imprime la fecha y la hora de la checada
+            $checada_fecha = array();
+            $checada_fecha = $database->mostrarChecada($user_id);
+
+            $fecha_Hora = $checada_fecha['fecha'] . ' ' . $checada_fecha['hora'];
+
+        }else {
+            $user_fullname = 'Usuario no encontrado';
+        }
+
+    } else if ($resultado == "Error compatibilidad") {
         $user_fullname = 'Usuario no encontrado';
     }
 
+    $tiempoEspera = 5;
+    $urlRedireccion = $_SERVER['REQUEST_URI'];   // Obtiene la URL actual (la página actual) y la redirige después del tiempo de espera
+    header("refresh:$tiempoEspera;url=$urlRedireccion"); // Envía una respuesta de encabezado HTTP con la instrucción de redirección
 }
+
+$archivo = "output.txt";
+
+if (file_exists($archivo)) {
+    unlink($archivo);
+} 
 
 ?>
 
